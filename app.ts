@@ -39,7 +39,7 @@ class StartUp {
 
   routes() {
     this.app.route("/").get((req, res) => {
-      res.send("Versão: 1.0.0 testeando!");
+      res.send("Versão: 1.0.0 teste");
     });
 
     this.app.route("/uploads").post(uploads.single("file"), (req, res) => {

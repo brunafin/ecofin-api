@@ -1,4 +1,4 @@
-import StartUp from "./startUp";
+import StartUp from "./app";
 
 // mesma coisa que o index.js
 

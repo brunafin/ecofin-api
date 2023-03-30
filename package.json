@@ -5,8 +5,12 @@
   "main": "program.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "tsc -w -diagnostics",
-    "start": "nodemon -L ./dist/program.js"
+    "build": "npx tsc",
+    "build:watch": "npx tsc -w",
+    "dev": "npx concurrently \"npm run build\" \"npm run dev:run\"",
+    "dev:watch": "npx concurrently \"npm run build:watch\" \"npm run dev:run\"",
+    "dev:run": "npx nodemon dist/index.js",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -19,11 +23,11 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",
     "multer": "^1.4.5-lts.1",
+    "npm": "^9.6.2",
     "request": "^2.88.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.2",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.2",
@@ -37,6 +41,7 @@
     "@types/request": "^2.48.8",
     "@types/swagger-jsdoc": "^6.0.1",
     "@types/swagger-ui-express": "^4.1.3",
+    "concurrently": "^8.0.1",
     "nodemon": "^2.0.22"
   }
 }

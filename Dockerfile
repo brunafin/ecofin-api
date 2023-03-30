@@ -1,12 +1,15 @@
-FROM node:alpine
+FROM node:latest
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install && \
+    npm install -g typescript
 
-COPY ./dist .
+COPY . .
+
+RUN npm run compile
 
 EXPOSE 3000
 

@@ -1,15 +1,28 @@
-  version: "3"
-  services: 
-    api:
-      image: brunafin/ecofin-api-ts
-      ports:
-        - "3000:3000"
-      links:
-        - link-db
-    link-db:
-      image: mongo
-      ports:
-        - "27017:27017"
-        - "28017:28017"
-      environment:
-        - AUTH=no
+version: "3"
+services:
+  compile:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run compile
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - link-db
+    links:
+      - link-db
+    command: npm start
+    volumes:
+      - ./dist:/usr/src/app/dist
+      - ./node_modules:/usr/src/app/node_modules
+  link-db:
+    image: mongo
+    ports:
+      - "27017:27017"
+      - "28017:28017"
+    environment:
+      - AUTH=no

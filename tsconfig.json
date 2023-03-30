@@ -1,4 +1,3 @@
-// configuração default
 {
   "compilerOptions": {
     "target": "es6",
