@@ -1,10 +1,11 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
+import * as compression from "compression";
 import Database from "./src/infra/db";
-import OutlayController from "./src/controllers/outlayController";
 import uploads from "./src/infra/uploads";
 import Auth from "./src/infra/auth";
+import outlayRouter from "./src/routes/outlayRoute";
 
 class StartUp {
   public app: express.Application;
@@ -35,11 +36,12 @@ class StartUp {
     this.enableCors();
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
+    this.app.use(compression());
   }
 
   routes() {
     this.app.route("/").get((req, res) => {
-      res.send("Versão: 1.0.0 teste");
+      res.send("Versão: 1.0.0");
     });
 
     this.app.route("/uploads").post(uploads.single("file"), (req, res) => {
@@ -51,12 +53,8 @@ class StartUp {
     });
 
     // this.app.use(Auth.validade);
+    this.app.use("/", outlayRouter);
 
-    this.app.route("/api/v1/outlays").get(OutlayController.get);
-    this.app.route("/api/v1/outlays/:id").get(OutlayController.getById);
-    this.app.route("/api/v1/outlays").post(OutlayController.create);
-    this.app.route("/api/v1/outlays/:id").put(OutlayController.update);
-    this.app.route("/api/v1/outlays/:id").delete(OutlayController.delete);
   }
 }
 

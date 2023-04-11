@@ -22,4 +22,19 @@ RUN . /etc/os-release \
 # RUN su node -c "npm install -g <your-package-list-here>"
 
 
+# Install Docker CLI
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -y install --no-install-recommends apt-transport-https ca-certificates curl gnupg2 software-properties-common lsb-release \
+    && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
+    && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
+    && apt-get update && apt-get -y install --no-install-recommends docker-ce-cli \
+    && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
+# Start Docker daemon
+RUN mkdir /var/run/docker \
+    && touch /var/run/docker.sock \
+    && groupadd docker \
+    && usermod -aG docker node \
+    && chgrp docker /var/run/docker.sock \
+    && chmod 660 /var/run/docker.sock \
+    && dockerd --group-add docker >/dev/null 2>&1 &
