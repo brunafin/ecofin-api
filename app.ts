@@ -6,8 +6,10 @@ import Database from "./src/infra/db";
 import uploads from "./src/infra/uploads";
 import Auth from "./src/infra/auth";
 import outlayRouter from "./src/routes/outlayRoute";
+import * as swaggerUi from "swagger-ui-express";
+import * as swaggerJsdoc from "swagger-jsdoc";
 
-class StartUp {
+class App {
   public app: express.Application;
   private _db: Database;
   private bodyParser;
@@ -21,6 +23,7 @@ class StartUp {
     this._db.createConnection();
     this.middleware();
     this.routes();
+    this.swaggerSetup(); // chame o método que configura o Swagger
   }
 
   enableCors() {
@@ -54,8 +57,30 @@ class StartUp {
 
     // this.app.use(Auth.validade);
     this.app.use("/", outlayRouter);
+  }
 
+  swaggerSetup() {
+    const options = {
+      definition: {
+        openapi: "3.0.0",
+        info: {
+          title: "API Ecofin",
+          version: "1.0.0",
+          description: "API Ecofin com Swagger",
+        },
+        servers: [
+          {
+            url: "http://localhost:3000",
+            description: "Servidor Local",
+          },
+        ],
+      },
+      apis: ["./src/routes/*.ts"],
+    };
+
+    const swaggerSpec = swaggerJsdoc(options);
+    this.app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   }
 }
 
-export default new StartUp();
+export default new App();
