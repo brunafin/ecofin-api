@@ -1,18 +1,17 @@
-import * as express from "express";
-import * as bodyParser from "body-parser";
-import * as cors from "cors";
-import * as compression from "compression";
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import compression from "compression";
 import Database from "./src/infra/db";
 import uploads from "./src/infra/uploads";
-import Auth from "./src/infra/auth";
 import outlayRouter from "./src/routes/outlayRoute";
-import * as swaggerUi from "swagger-ui-express";
-import * as swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
 
 class App {
   public app: express.Application;
-  private _db: Database;
-  private bodyParser;
+  private readonly _db: Database;
+  private readonly bodyParser;
 
   /**
    *
@@ -26,7 +25,7 @@ class App {
     this.swaggerSetup(); // chame o método que configura o Swagger
   }
 
-  enableCors() {
+  enableCors(): void {
     const options: cors.CorsOptions = {
       methods: "POST, PUT, PATCH, GET, DELETE",
       origin: "*",
@@ -35,14 +34,14 @@ class App {
     this.app.use(cors(options));
   }
 
-  middleware() {
+  middleware(): void {
     this.enableCors();
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(compression());
   }
 
-  routes() {
+  routes(): void {
     this.app.route("/").get((req, res) => {
       res.send("Versão: 1.0.0");
     });
@@ -59,7 +58,7 @@ class App {
     this.app.use("/", outlayRouter);
   }
 
-  swaggerSetup() {
+  swaggerSetup(): void {
     const options = {
       definition: {
         openapi: "3.0.0",

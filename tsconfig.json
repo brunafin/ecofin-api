@@ -6,7 +6,8 @@
     "incremental": true,
     "typeRoots": ["../node_modules/@types"],
     "types": ["node"],
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "esModuleInterop": true,
   },
   "include": ["**/*.ts", "*.ts"],
   "exclude": ["node_modules"],

@@ -1,4 +1,5 @@
 import OutlayRepository from "../repository/outlayRepository";
+import { type Types } from "mongoose";
 // faz as queries
 
 class OutlayService {
@@ -7,8 +8,8 @@ class OutlayService {
     return result;
   }
 
-  async getById(__id: number) {
-    const result = await OutlayRepository.findById(__id);
+  async getById(_id: Types.ObjectId) {
+    const result = await OutlayRepository.findById(_id);
     return result;
   }
 
